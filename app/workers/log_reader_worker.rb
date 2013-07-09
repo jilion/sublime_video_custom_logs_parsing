@@ -37,14 +37,22 @@ class LogReaderWorker
   end
 
   def _gzip_lines
-    logger.info "_log_file: #{_log_file.inspect}"
-    gz = Zlib::GzipReader.new(_log_file.body, encoding: 'iso-8859-1')
-    logger.info "GZip file: #{gz.inspect}"
-    gz.each_line { |line| yield(line) }
+    _log_file do |tempfile|
+      gz = Zlib::GzipReader.new(tempfile, encoding: 'iso-8859-1')
+      logger.info "GZip file: #{gz.inspect}"
+      gz.each_line { |line| yield(line) }
+    end
   end
 
   def _log_file
-    S3Wrapper.fog_connection.get_object(S3Wrapper.bucket, _log_filename)
+    fog_file = S3Wrapper.fog_connection.get_object(S3Wrapper.bucket, _log_filename)
+    tempfile = Tempfile.new(['export', '.csv'])
+    tempfile.write(fog_file.body)
+    tempfile.rewind
+    yield(tempfile)
+  ensure
+    tempfile.close
+    tempfile.unlink
   end
 
   def _log_filename
