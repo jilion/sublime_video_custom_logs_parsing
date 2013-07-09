@@ -20,10 +20,12 @@ class LogReaderWorker
   end
 
   def _read_log_and_delay_gif_requests_parsing
+    logger.info '_read_log_and_delay_gif_requests_parsing...'
     _gif_request_lines { |line| LogLineParserWorker.perform_async(line) }
   end
 
   def _gif_request_lines
+    logger.info '_gif_request_lines...'
     _gzip_lines do |line|
       logger.info "line is gif request?: #{_gif_request?(line)}"
       yield(line) if _gif_request?(line)
