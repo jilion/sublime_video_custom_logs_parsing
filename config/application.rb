@@ -19,12 +19,5 @@ module SublimeVideoCustomLogsParsing
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-
-    # http://guides.rubyonrails.org/asset_pipeline.html#precompiling-assets
-    # For faster asset precompiles, you can partially load your application
-    # by setting config.assets.initialize_on_precompile to false
-    # in config/application.rb, though in that case templates cannot see
-    # application objects or methods. Heroku requires this to be false.
-    config.assets.initialize_on_precompile = false
   end
 end
