@@ -20,14 +20,11 @@ class LogReaderWorker
   end
 
   def _read_log_and_delay_gif_requests_parsing
-    logger.info '_read_log_and_delay_gif_requests_parsing...'
     _gif_request_lines { |line| LogLineParserWorker.perform_async(line) }
   end
 
   def _gif_request_lines
-    logger.info '_gif_request_lines...'
     _gzip_lines do |line|
-      logger.info "line is gif request?: #{_gif_request?(line)}"
       yield(line) if _gif_request?(line)
     end
   end
@@ -39,20 +36,24 @@ class LogReaderWorker
   def _gzip_lines
     _log_file do |tempfile|
       gz = Zlib::GzipReader.new(tempfile, encoding: 'iso-8859-1')
-      logger.info "GZip file: #{gz.inspect}"
       gz.each_line { |line| yield(line) }
     end
   end
 
   def _log_file
-    fog_file = S3Wrapper.fog_connection.get_object(S3Wrapper.bucket, _log_filename)
-    tempfile = Tempfile.new(['export', '.csv'])
-    tempfile.write(fog_file.body)
-    tempfile.rewind
-    yield(tempfile)
-  ensure
-    tempfile.close
-    tempfile.unlink
+    tempfile = Tempfile.new([File.basename(_log_filename), '.gz'])
+    begin
+      tempfile.write(_fog_file.body.encode!('UTF-8', 'UTF-8', invalid: :replace))
+      tempfile.rewind
+      yield(tempfile)
+    ensure
+      tempfile.close
+      tempfile.unlink
+    end
+  end
+
+  def _fog_file
+    @_fog_file ||= S3Wrapper.fog_connection.get_object(S3Wrapper.bucket, _log_filename)
   end
 
   def _log_filename
