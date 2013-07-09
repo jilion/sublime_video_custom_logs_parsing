@@ -8,6 +8,7 @@ gem 'rails_12factor' # Heroku integration: https://devcenter.heroku.com/articles
 
 gem 'pg'
 gem 'sidekiq'
+gem 'sidekiq-limit_fetch'
 
 gem 'fog'
 gem 'geoip'
@@ -20,7 +21,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 
 gem 'rack-status'
-gem 'honeybadger'
+# gem 'honeybadger'
 
 group :production do
   gem 'rack-devise_cookie_auth'
