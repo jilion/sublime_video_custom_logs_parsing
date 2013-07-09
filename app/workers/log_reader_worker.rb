@@ -7,7 +7,7 @@ class LogReaderWorker
   attr_accessor :start_at
 
   def perform(start_at)
-    @start_at = start_at.change(sec: 0)
+    @start_at = Time.parse(start_at).change(sec: 0)
     _with_blocked_queue { _read_log_and_delay_gif_requests_parsing }
   end
 
