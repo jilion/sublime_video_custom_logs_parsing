@@ -14,7 +14,7 @@ describe LogLineParserWorker do
 
     context 'with already a record for this day' do
       before do
-        @views = DailyViewsPerCountry.create!(day: parsed_line.timestamp.to_date, minutes_parsed: 42, views_per_country: { 'us' => 12, 'fr' => 42 })
+        @views = DailyViewsPerCountry.create!(day: parsed_line.timestamp.to_date, lines_parsed: 42, views_per_country: { 'us' => 12, 'fr' => 42 })
       end
 
       it 'does not create a new record' do
@@ -27,10 +27,10 @@ describe LogLineParserWorker do
         @views.reload.views_per_country['us'].should eq '13'
       end
 
-      it 'increments the count of minutes parsed ' do
+      it 'increments the count of lines parsed ' do
         described_class.new.perform(line)
 
-        @views.reload.minutes_parsed.should eq 43
+        @views.reload.lines_parsed.should eq 43
       end
     end
   end

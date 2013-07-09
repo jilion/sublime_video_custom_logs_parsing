@@ -4,7 +4,7 @@ class CreateDailyViewsPerCountries < ActiveRecord::Migration
     create_table :daily_views_per_countries do |t|
       t.date :day
       t.hstore :views_per_country
-      t.integer :minutes_parsed
+      t.integer :lines_parsed
 
       t.timestamps
     end

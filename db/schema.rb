@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20130708142336) do
   create_table "daily_views_per_countries", force: true do |t|
     t.date     "day"
     t.hstore   "views_per_country"
-    t.integer  "minutes_parsed"
+    t.integer  "lines_parsed"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
