@@ -1,6 +1,6 @@
 Sidekiq.configure_server do |config|
   if database_url = ENV['DATABASE_URL']
-    ENV['DATABASE_URL'] = "#{database_url}?pool=20"
+    ENV['DATABASE_URL'] = "#{database_url}?pool=500"
     ActiveRecord::Base.establish_connection
   end
 end
