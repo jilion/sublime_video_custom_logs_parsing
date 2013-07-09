@@ -37,11 +37,10 @@ class LogReaderWorker
   end
 
   def _gzip_lines
-    _log_file do |log_file|
-      gz = Zlib::GzipReader.new(log_file, encoding: 'iso-8859-1')
-      logger.info "GZip file: #{gz.inspect}"
-      gz.each_line { |line| yield(line) }
-    end
+    logger.info "_log_file: #{_log_file.inspect}"
+    gz = Zlib::GzipReader.new(_log_file.body, encoding: 'iso-8859-1')
+    logger.info "GZip file: #{gz.inspect}"
+    gz.each_line { |line| yield(line) }
   end
 
   def _log_file
