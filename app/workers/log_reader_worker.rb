@@ -45,7 +45,7 @@ class LogReaderWorker
   end
 
   def _log_filename
-    "#{ENV['VOXCAST_HOSTNAME']}.log.#{start_at.to_i}-#{start_at.to_i + 60}.gz"
+    "voxcast/#{ENV['VOXCAST_HOSTNAME']}.log.#{start_at.to_i}-#{start_at.to_i + 60}.gz"
   end
 
 end
