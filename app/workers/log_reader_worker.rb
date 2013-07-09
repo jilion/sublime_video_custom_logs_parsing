@@ -24,12 +24,8 @@ class LogReaderWorker
   end
 
   def _gif_request_lines
-    @index = -1 # skip header
     _gzip_lines do |line|
-      if index >= log.read_lines && _gif_request?(line)
-        yield(line)
-      end
-      @index += 1
+      yield(line) if _gif_request?(line)
     end
   end
 
