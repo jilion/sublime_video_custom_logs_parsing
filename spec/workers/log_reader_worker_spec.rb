@@ -10,7 +10,7 @@ describe LogReaderWorker do
     end
 
     it 'delays LogLineParserWorker for each line in the log file' do
-      expect(LogLineParserWorker).to receive(:perform_async).at_least(500).times
+      expect(LogLineParserWorker).to receive(:perform_async).at_least(140).times
 
       worker.perform(Time.at(1355880780).to_s)
 

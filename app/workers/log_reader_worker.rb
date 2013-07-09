@@ -20,7 +20,11 @@ class LogReaderWorker
   end
 
   def _read_log_and_delay_gif_requests_parsing
-    _gif_request_lines { |line| LogLineParserWorker.perform_async(start_at, line) }
+    _gif_request_lines do |line|
+      parsed_line = LogLineParser.new(line)
+
+      LogLineParserWorker.perform_async(start_at, line) if parsed_line.valid_start_request?
+    end
   end
 
   def _gif_request_lines
