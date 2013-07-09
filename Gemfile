@@ -10,6 +10,9 @@ gem 'pg'
 gem 'sidekiq'
 gem 'sidekiq-limit_fetch'
 
+gem 'sinatra', require: false
+gem 'slim'
+
 gem 'fog'
 gem 'geoip'
 

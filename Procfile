@@ -1,2 +1,2 @@
-worker: bundle exec sidekiq -c 25 -t 10 -q custom-logs -q custom-logs-parser
-# scheduler: bundle exec rake scheduler:logs_creator_worker
+web:    bundle exec unicorn -p $PORT -c ./config/unicorn.rb
+worker: bundle exec sidekiq -c $SIDEKIQ_CONCURRENCY -q custom-logs -q custom-logs-parser
