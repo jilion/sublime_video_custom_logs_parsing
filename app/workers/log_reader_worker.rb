@@ -25,6 +25,7 @@ class LogReaderWorker
 
   def _gif_request_lines
     _gzip_lines do |line|
+      logger.info "line is gif request?: #{_gif_request?(line)}"
       yield(line) if _gif_request?(line)
     end
   end
@@ -36,6 +37,7 @@ class LogReaderWorker
   def _gzip_lines
     _log_file do |log_file|
       gz = Zlib::GzipReader.new(log_file, encoding: 'iso-8859-1')
+      logger.info "GZip file: #{gz.inspect}"
       gz.each_line { |line| yield(line) }
     end
   end
