@@ -27,7 +27,6 @@ gem 'rack-status'
 # gem 'honeybadger'
 
 group :production do
-  gem 'rack-devise_cookie_auth'
   gem 'unicorn'
   gem 'newrelic_rpm'
   gem 'newrelic-redis'

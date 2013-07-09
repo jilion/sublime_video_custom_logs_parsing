@@ -113,9 +113,6 @@ GEM
       method_source (~> 0.8)
       slop (~> 3.4)
     rack (1.5.2)
-    rack-devise_cookie_auth (0.1.0)
-      activesupport (>= 2.3.2)
-      rack (>= 1.0)
     rack-protection (1.5.0)
       rack
     rack-status (1.0.0)
@@ -234,7 +231,6 @@ DEPENDENCIES
   newrelic-redis
   newrelic_rpm
   pg
-  rack-devise_cookie_auth
   rack-status
   rails (= 4.0.0)
   rails_12factor
