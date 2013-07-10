@@ -8,5 +8,3 @@ end
 Sidekiq.configure_client do |config|
   config.redis = { size: 2 } # for web dyno
 end
-
-Sidekiq::Queue['custom-logs-db-updater'].limit = 1 # this update a record in the DB so ensure no race condition!
