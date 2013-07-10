@@ -1,0 +1,45 @@
+$('#<%= to %>').highcharts({
+  chart : {
+    height: 800
+  },
+
+  title : {
+    text : 'Views per day per <%= to %>'
+  },
+
+  xAxis : {
+    type : 'datetime',
+    categories: [
+      <% day = @start_day %>
+      <% while day <= @end_day %>
+        '<%= day.strftime('%b %Y') %>',
+        <% day += 1.month %>
+      <% end %>
+    ]
+  },
+
+  rangeSelector: {
+    selected : 3
+  },
+
+  navigator : {
+    enabled : false
+  },
+
+  plotOptions : {
+    column : {
+      stacking : 'normal'
+    }
+  },
+
+  series : [
+    <% chart_data.each do |country, data| %>
+      {
+        name : '<%= country %>',
+        data : <%= data %>,
+        type : 'column',
+        stack: 1
+      },
+    <% end %>
+  ]
+});

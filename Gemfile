@@ -28,7 +28,6 @@ gem 'rack-status'
 
 # Charts
 gem 'countries'
-gem 'chartkick'
 
 group :production do
   gem 'unicorn'

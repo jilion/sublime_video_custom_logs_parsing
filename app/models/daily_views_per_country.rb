@@ -7,18 +7,17 @@ class DailyViewsPerCountry < ActiveRecord::Base
     self.views_per_country ||= Hash.new(0)
   end
 
-  def self.monthly_views_per_countries
+  def self.monthly_views_per_countries(start_date, end_date = Time.now.utc)
+    start_day, end_day = start_date.to_date, end_date.to_date
     monthly_views_per_countries ||= Hash.new { |hash, country| hash[country] = Hash.new(0) }
 
-    DailyViewsPerCountry.find_each do |daily_views_per_country|
+    DailyViewsPerCountry.where(day: (start_day..end_day)).order(:day).all.each do |daily_views_per_country|
       daily_views_per_country.views_per_country.each do |country_key, views|
-        if country = Country[country_key]
-          monthly_views_per_countries[country.name][daily_views_per_country.day.beginning_of_month] += views.to_i
-        end
+        monthly_views_per_countries[country_key][daily_views_per_country.day.beginning_of_month.to_date] += views.to_i
       end
     end
 
-    monthly_views_per_countries.map { |k, v| { name: k, data: v } }.sort { |a, b| b[:data].sum { |k, v| v } <=> a[:data].sum { |k, v| v } }.shift(25)
+    monthly_views_per_countries
   end
 
   def increment_views!(new_views_per_country)

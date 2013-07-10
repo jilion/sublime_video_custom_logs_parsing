@@ -21,7 +21,6 @@ describe LogLineParser do
   end
 
   context "non data request" do
-    let(:line) { "1368605419 0 94.250.35.142 2474 46.22.75.231 80 TCP_EXPIRED_HIT/200 2868 GET http://cdn.sublimevideo.net/a/avo5qgqh/1/logo-custom-61x22-1355887767@2x.png - 90 785 \"-\" \"Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.64 Safari/537.31\" 33820" }
     let(:line) { '- 1 82.48.17.156 2012-12-18 2012-12-18 200 GET "GET http://cdn.sublimevideo.net/a/avo5qgqh/1/logo-custom-61x22-1355887767@2x.png HTTP/1.1" 200 "http://zooppa.it/ads/chevron-aids-is-going-to-lose/videos/aids-is-going-to-lose-because" "http://cdn.sublimevideo.net/a/avo5qgqh/1/logo-custom-61x22-1355887767@2x.png" "" "/a/avo5qgqh/1/logo-custom-61x22-1355887767@2x.png" - 4076.voxcdn.com 815 471 20:33:00 20:33:00 228 "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11" - "Amsterdam"' }
     subject { LogLineParser.new(line) }
 

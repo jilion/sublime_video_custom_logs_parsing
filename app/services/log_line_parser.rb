@@ -5,9 +5,9 @@ require 'geoip_wrapper'
 class LogLineParser
 
   REGEX = %r{^
-    -\s     # ?
-    (\d+)\s # ?
-    (\S*)\s # client ip
+    (\d+|\-)\s # cache_miss_reason
+    (\d+|\-)\s # cache_status
+    (\S*)\s    # client ip
   }x
 
   attr_accessor :line
@@ -17,7 +17,7 @@ class LogLineParser
   end
 
   def ip
-    _scan[1]
+    _scan[2]
   end
 
   def country_code
@@ -37,7 +37,7 @@ class LogLineParser
   end
 
   def start_event?
-    line =~ /(\?|&)e=s&?/
+    line =~ /[\?&]?e=s&?/
   end
 
   private
