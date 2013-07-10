@@ -28,14 +28,9 @@ describe LogReaderWorker do
 
       it 'increments the views for the parsed country' do
         worker.perform(Time.at(1355880780).to_s)
+
         @views.reload.views_per_country['it'].should eq '13'
-        @views.reload.views_per_country['fr'].should eq '43'
-      end
-
-      it 'increments the count of lines parsed' do
-        worker.perform(Time.at(1355880780).to_s)
-
-        @views.reload.lines_parsed.should eq 140
+        @views.views_per_country['fr'].should eq '43'
       end
     end
   end

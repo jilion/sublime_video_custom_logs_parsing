@@ -11,7 +11,7 @@ class LogLineParserWorker
     @parsed_line = LogLineParser.new(line)
     return unless parsed_line.valid_start_request?
 
-    views = DailyViewsPerCountry.find_or_initialize_by(day: timestamp.to_date)
-    views.increment_views_for!(parsed_line.country_code)
+    # views = DailyViewsPerCountry.find_or_initialize_by(day: timestamp.to_date)
+    # views.increment_views_for!(parsed_line.country_code)
   end
 end

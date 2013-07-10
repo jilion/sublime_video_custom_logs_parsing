@@ -9,9 +9,12 @@ class DailyViewsPerCountry < ActiveRecord::Base
     self.views_per_country ||= Hash.new(0)
   end
 
-  def increment_views_for!(country_code)
-    self.views_per_country = views_per_country.dup.tap { |views| views[country_code] = views[country_code].to_i + 1 }
-    self.increment(:lines_parsed)
+  def increment_views!(new_views_per_country)
+    current_views_per_country = views_per_country.dup
+    new_views_per_country.each do |k, v|
+      current_views_per_country[k] = current_views_per_country[k].to_i + v
+    end
+    self.views_per_country = current_views_per_country
     self.save!
   end
 
