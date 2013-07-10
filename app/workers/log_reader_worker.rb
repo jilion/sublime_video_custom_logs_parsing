@@ -8,7 +8,7 @@ class LogReaderWorker
 
   def perform(start_at)
     @start_at = Time.parse(start_at).change(sec: 0)
-    _with_blocked_queue { _read_log_and_delay_gif_requests_parsing }
+    _with_blocked_queue { _read_log_and_update_views_counter }
   end
 
   private
@@ -19,7 +19,7 @@ class LogReaderWorker
     Sidekiq::Queue['custom-logs'].unblock
   end
 
-  def _read_log_and_delay_gif_requests_parsing
+  def _read_log_and_update_views_counter
     _gif_request_lines do |line|
       parsed_line = LogLineParser.new(line)
 
