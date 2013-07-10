@@ -9,12 +9,34 @@ describe LogReaderWorker do
       expect(worker).to receive(:_fog_file) { fog_file }
     end
 
-    it 'delays LogLineParserWorker for each line in the log file' do
-      expect(LogLineParserWorker).to receive(:perform_async).at_least(140).times
+    context 'without any record for this day' do
+      it 'delays LogLineParserWorker for each line in the log file' do
+        expect { worker.perform(Time.at(1355880780).to_s) }.to change(DailyViewsPerCountry, :count).by(1)
 
-      worker.perform(Time.at(1355880780).to_s)
+        expect(worker.send(:_log_filename)).to eq('voxcast/4076.voxcdn.com.log.1355880780-1355880840.gz')
+      end
+    end
 
-      expect(worker.send(:_log_filename)).to eq('voxcast/4076.voxcdn.com.log.1355880780-1355880840.gz')
+    context 'with already a record for this day' do
+      before do
+        @views = DailyViewsPerCountry.create!(day: Time.at(1355880780).to_date, lines_parsed: 0, views_per_country: { 'it' => 12, 'fr' => 42 })
+      end
+
+      it 'does not create a new record' do
+        expect { worker.perform(Time.at(1355880780).to_s) }.to_not change(DailyViewsPerCountry, :count)
+      end
+
+      it 'increments the views for the parsed country' do
+        worker.perform(Time.at(1355880780).to_s)
+        @views.reload.views_per_country['it'].should eq '13'
+        @views.reload.views_per_country['fr'].should eq '43'
+      end
+
+      it 'increments the count of lines parsed' do
+        worker.perform(Time.at(1355880780).to_s)
+
+        @views.reload.lines_parsed.should eq 140
+      end
     end
   end
 

@@ -23,7 +23,10 @@ class LogReaderWorker
     _gif_request_lines do |line|
       parsed_line = LogLineParser.new(line)
 
-      LogLineParserWorker.perform_async(start_at, line) if parsed_line.valid_start_request?
+      if parsed_line.valid_start_request?
+        views = DailyViewsPerCountry.find_or_initialize_by(day: start_at.to_date)
+        views.increment_views_for!(parsed_line.country_code)
+      end
     end
   end
 

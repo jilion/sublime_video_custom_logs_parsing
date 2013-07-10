@@ -9,7 +9,7 @@ namespace :logs do
 
     while timestamp <= Time.now.utc
       minutes_delayed += 1
-      LogReaderWorker.perform_at(minutes_delayed.seconds.from_now, timestamp)
+      LogReaderWorker.perform_async(timestamp)
       timestamp += 60.seconds
       puts "Delayed #{minutes_delayed} / #{minutes_to_delay} minutes" if minutes_delayed % 1000 == 0
     end

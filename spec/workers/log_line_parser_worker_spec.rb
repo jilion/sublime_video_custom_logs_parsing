@@ -21,13 +21,13 @@ describe LogLineParserWorker do
         expect { worker }.to_not change(DailyViewsPerCountry, :count)
       end
 
-      it 'increments the views for the parsed country ' do
+      it 'increments the views for the parsed country' do
         worker
 
         @views.reload.views_per_country['it'].should eq '13'
       end
 
-      it 'increments the count of lines parsed ' do
+      it 'increments the count of lines parsed' do
         worker
 
         @views.reload.lines_parsed.should eq 43
