@@ -4,20 +4,13 @@ class LogReaderWorker
   include Sidekiq::Worker
   sidekiq_options queue: 'custom-logs'
 
-  attr_accessor :start_at
-
   def perform(start_at)
     @start_at = Time.parse(start_at).change(sec: 0)
-    _with_blocked_queue { _read_log_and_update_views_counter }
+
+    _read_log_and_update_views_counter
   end
 
   private
-
-  def _with_blocked_queue
-    Sidekiq::Queue['custom-logs'].block
-    yield
-    Sidekiq::Queue['custom-logs'].unblock
-  end
 
   def _read_log_and_update_views_counter
     views_per_country = Hash.new(0)
@@ -30,7 +23,7 @@ class LogReaderWorker
       end
     end
 
-    DailyViewsPerCountry.find_or_initialize_by(day: start_at.to_date).increment_views!(views_per_country)
+    DailyViewsPerCountryUpdaterWorker.perform_async(@start_at, views_per_country)
   end
 
   def _gif_request_lines
@@ -67,7 +60,7 @@ class LogReaderWorker
   end
 
   def _log_filename
-    "voxcast/#{ENV['VOXCAST_HOSTNAME']}.log.#{start_at.to_i}-#{start_at.to_i + 60}.gz"
+    "voxcast/#{ENV['VOXCAST_HOSTNAME']}.log.#{@start_at.to_i}-#{@start_at.to_i + 60}.gz"
   end
 
 end
