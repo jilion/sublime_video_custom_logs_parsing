@@ -26,6 +26,10 @@ gem 'turbolinks'
 gem 'rack-status'
 # gem 'honeybadger'
 
+# Charts
+gem 'countries'
+gem 'chartkick'
+
 group :production do
   gem 'unicorn'
   gem 'newrelic_rpm'

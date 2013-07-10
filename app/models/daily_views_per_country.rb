@@ -1,12 +1,24 @@
 class DailyViewsPerCountry < ActiveRecord::Base
 
   validates :day, presence: true, uniqueness: true
-  validates :lines_parsed, presence: true
 
   def initialize(*args)
     super
-    self.lines_parsed ||= 0
     self.views_per_country ||= Hash.new(0)
+  end
+
+  def self.monthly_views_per_countries
+    monthly_views_per_countries ||= Hash.new { |hash, country| hash[country] = Hash.new(0) }
+
+    DailyViewsPerCountry.find_each do |daily_views_per_country|
+      daily_views_per_country.views_per_country.each do |country_key, views|
+        if country = Country[country_key]
+          monthly_views_per_countries[country.name][daily_views_per_country.day.beginning_of_month] += views.to_i
+        end
+      end
+    end
+
+    monthly_views_per_countries.map { |k, v| { name: k, data: v } }.sort { |a, b| b[:data].sum { |k, v| v } <=> a[:data].sum { |k, v| v } }.shift(25)
   end
 
   def increment_views!(new_views_per_country)
