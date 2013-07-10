@@ -6,7 +6,6 @@ class LogReaderWorker
 
   def perform(start_at)
     @start_at = Time.parse(start_at).change(sec: 0)
-    @semaphore = Mutex.new
 
     _read_log_and_update_views_counter
   end
@@ -24,7 +23,8 @@ class LogReaderWorker
       end
     end
 
-    @semaphore.synchronize do
+    semaphore = Redis::Semaphore.new(:_read_log_and_update_views_counter, url: ENV['REDIS_PROVIDER'])
+    semaphore.lock do
       DailyViewsPerCountry.find_or_initialize_by(day: @start_at.to_date).increment_views!(views_per_country)
     end
   end
