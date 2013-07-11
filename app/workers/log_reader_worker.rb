@@ -24,6 +24,8 @@ class LogReaderWorker
     end
 
     semaphore = Redis::Semaphore.new("read_log_and_update_views_counter-#{@start_at.to_date}", url: ENV[ENV['REDIS_PROVIDER']])
+    logger.info "The semaphore 'read_log_and_update_views_counter-#{@start_at.to_date}' exists!" if semaphore.exists?
+    logger.info "Locking semaphore 'read_log_and_update_views_counter-#{@start_at.to_date}'..."
     semaphore.lock do
       DailyViewsPerCountry.find_or_initialize_by(day: @start_at.to_date).increment_views!(views_per_country)
     end

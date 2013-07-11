@@ -11,6 +11,12 @@ namespace :logs do
     delay_parsing_for_period(date.beginning_of_month, date.end_of_month)
   end
 
+  desc 'Parse logs from a specific day'
+  task :parse_for_day, [:year, :month, :day] => [:environment] do |t, args|
+    date = Time.utc(args.year, args.month, args.day)
+    delay_parsing_for_period(date.beginning_of_day, date.end_of_day)
+  end
+
 end
 
 def delay_parsing_for_period(start_at, end_at)
