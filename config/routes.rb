@@ -2,7 +2,8 @@ SublimeVideoCustomLogsParsing::Application.routes.draw do
   require 'sidekiq/web'
   mount Sidekiq::Web, at: '/sidekiq'
 
-  resources :daily_views_per_countries, only: [:index]
+  get 'views/per/country' => 'monthly_views#country', as: 'monthly_views_per_country'
+  get 'views/per/region' => 'monthly_views#region', as: 'monthly_views_per_region'
 
-  root to: 'daily_views_per_countries#index'
+  root to: redirect('/views/per/country')
 end
