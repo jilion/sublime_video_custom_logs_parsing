@@ -8,7 +8,6 @@ gem 'rails_12factor' # Heroku integration: https://devcenter.heroku.com/articles
 
 gem 'pg'
 gem 'sidekiq'
-gem 'redis-semaphore'
 
 gem 'sinatra', require: false
 gem 'slim'
