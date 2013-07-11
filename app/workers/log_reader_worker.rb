@@ -15,7 +15,7 @@ class LogReaderWorker
   def _read_log_and_update_views_counter
     views_per_country = Hash.new(0)
 
-    _gif_request_lines do |line|
+    _gzip_lines do |line|
       parsed_line = LogLineParser.new(line)
 
       if parsed_line.valid_start_request?
@@ -27,16 +27,6 @@ class LogReaderWorker
     semaphore.lock do
       DailyViewsPerCountry.find_or_initialize_by(day: @start_at.to_date).increment_views!(views_per_country)
     end
-  end
-
-  def _gif_request_lines
-    _gzip_lines do |line|
-      yield(line) if _gif_request?(line)
-    end
-  end
-
-  def _gif_request?(line)
-    line.include?('/_.gif')
   end
 
   def _gzip_lines

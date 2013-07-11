@@ -1,5 +1,3 @@
-require 'multi_json'
-require 'cgi'
 require 'geoip_wrapper'
 
 class LogLineParser
