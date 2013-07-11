@@ -8,8 +8,8 @@ module ApplicationHelper
     _monthly_views_total(monthly_views_per_countries, start_day, end_day)
   end
 
-  def monthly_views_per_country_for_chart(monthly_views_per_countries, start_day, end_day)
-    Hash[_monthly_views_per_country(monthly_views_per_countries, start_day, end_day).sort { |a, b| b[1].sum <=> a[1].sum }.slice(0, 25)]
+  def monthly_views_per_country_for_chart(monthly_views_per_countries, start_day, end_day, top_count)
+    Hash[_monthly_views_per_country(monthly_views_per_countries, start_day, end_day).sort { |a, b| b[1].sum <=> a[1].sum }.slice(0, top_count)]
   end
 
   def monthly_views_per_region_for_chart(monthly_views_per_countries, start_day, end_day)
