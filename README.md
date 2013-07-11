@@ -10,14 +10,14 @@ Please feel free to use a different markup language if you do not plan to run
 * Connections: ~50 for 900 threads
 * RAM: ~15MB
 
-=> [100MB plan is enough](https://addons.heroku.com/rediscloud)
+=> [Redis Cloud's 100MB plan](https://addons.heroku.com/rediscloud)
 
 ### Postgres
 
 * Connections: ~10
 * 1 row per day: 10,000 rows ~= 27 years!
 
-=> [Dev plan is enough](https://addons.heroku.com/heroku-postgresql)
+=> [Heroku Postgres Dev plan](https://addons.heroku.com/heroku-postgresql)
 
 ### Workers
 
