@@ -4,11 +4,14 @@ $('#<%= to %>').highcharts({
   },
 
   title : {
-    text : 'Views per month per <%= to %>'
+    text : null
   },
 
   xAxis : {
     type : 'datetime',
+    title : {
+      text : 'Views'
+    },
     categories: [
       <% day = @start_day %>
       <% while day <= @end_day %>
@@ -16,6 +19,12 @@ $('#<%= to %>').highcharts({
         <% day += 1.month %>
       <% end %>
     ]
+  },
+
+  yAxis : {
+    title : {
+      text : 'Views'
+    }
   },
 
   rangeSelector: {
