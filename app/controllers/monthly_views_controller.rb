@@ -1,6 +1,9 @@
 class MonthlyViewsController < ApplicationController
   before_filter :_set_dates, :_find_views
 
+  def index
+  end
+
   def country
   end
 

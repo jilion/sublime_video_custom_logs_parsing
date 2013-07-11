@@ -7,7 +7,8 @@ html
     = csrf_meta_tags
   body
     ol
-      li = link_to 'Per country', monthly_views_per_country_path
-      li = link_to 'Per region', monthly_views_per_region_path
+      li = link_to 'Total monthly views', monthly_views_path
+      li = link_to 'Monthly views per region', region_monthly_views_path
+      li = link_to 'Monthly views per country', country_monthly_views_path
 
     = yield

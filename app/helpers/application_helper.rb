@@ -4,8 +4,12 @@ module ApplicationHelper
     number_with_delimiter(number, options)
   end
 
+  def monthly_views_total_for_chart(monthly_views_per_countries, start_day, end_day)
+    _monthly_views_total(monthly_views_per_countries, start_day, end_day)
+  end
+
   def monthly_views_per_country_for_chart(monthly_views_per_countries, start_day, end_day)
-    Hash[_monthly_views_per_country(monthly_views_per_countries, start_day, end_day).sort { |a, b| b[1].sum <=> a[1].sum }.slice(0, 15)]
+    Hash[_monthly_views_per_country(monthly_views_per_countries, start_day, end_day).sort { |a, b| b[1].sum <=> a[1].sum }.slice(0, 25)]
   end
 
   def monthly_views_per_region_for_chart(monthly_views_per_countries, start_day, end_day)
@@ -27,6 +31,17 @@ module ApplicationHelper
     end
 
     monthly_views_per_countries_with_missing_day_filled
+  end
+
+  def _monthly_views_total(monthly_views_per_countries, start_day, end_day)
+    day = start_day
+    monthly_views = Hash.new(0)
+    while day <= end_day
+      monthly_views[day] += monthly_views_per_countries.sum { |country_key, hash| hash[day] }
+      day += 1.month
+    end
+
+    { Total: monthly_views.values }
   end
 
   def _monthly_views_per_country(monthly_views_per_countries, start_day, end_day)

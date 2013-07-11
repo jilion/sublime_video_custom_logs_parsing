@@ -1,6 +1,6 @@
 $('#<%= to %>').highcharts({
   chart : {
-    height: 600
+    height: 900
   },
 
   title : {
@@ -42,9 +42,9 @@ $('#<%= to %>').highcharts({
   },
 
   series : [
-    <% chart_data.each do |country, data| %>
+    <% chart_data.each do |name, data| %>
       {
-        name : '<%= country %>',
+        name : '<%= name %>',
         data : <%= data %>,
         type : 'column',
         stack: 1
@@ -59,7 +59,7 @@ $('#<%= to %>').highcharts({
 
       $.each(points, function(i, point) {
           s += '<br/><span style=\"color:' + point.series.color + ';font-weight:bold\">'+ point.series.name +'</span>: '+
-              point.y +' views ('+ Highcharts.numberFormat(point.percentage, 2) +'%)';
+              Highcharts.numberFormat(point.y, 0) +' - '+ Highcharts.numberFormat(point.percentage, 2) + '%';
       });
 
       return s;

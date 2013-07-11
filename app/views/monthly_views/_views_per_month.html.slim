@@ -1,8 +1,0 @@
-h3 Total views per month
-
-ul
-  - day = start_day
-  - while day <= end_day
-    li
-      = raw "#{day.strftime('%b %Y')} : #{display_integer(data.sum { |country_key, hash| hash[day] })}"
-      - day += 1.month

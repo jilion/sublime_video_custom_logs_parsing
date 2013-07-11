@@ -1,7 +1,5 @@
-h3 Views per month per country for the top 15 countries
+h2 Monthly views per country (for the top 25 countries)
 
 #country
 
 = javascript_tag(render 'chart', to: 'country', chart_data: monthly_views_per_country_for_chart(@monthly_views_per_countries, @start_day, @end_day))
-
-= render 'views_per_month', data: @monthly_views_per_countries, start_day: @start_day, end_day: @end_day
