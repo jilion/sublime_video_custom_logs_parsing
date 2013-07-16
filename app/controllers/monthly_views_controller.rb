@@ -13,7 +13,8 @@ class MonthlyViewsController < ApplicationController
   private
 
   def _set_dates
-    @start_day = DailyViewsPerCountry.order(:day).first.day.beginning_of_month
+    # @start_day = DailyViewsPerCountry.order(:day).first.day.beginning_of_month
+    @start_day = Time.utc(2012, 9)
     @end_day   = Time.now.utc
   end
 
